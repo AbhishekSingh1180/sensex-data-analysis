@@ -14,9 +14,9 @@ jobs:
         API_URL: ${{ secrets.API_URL }}
         API_KEY: ${{ secrets.API_KEY }}
         API_HOST: ${{ secrets.API_HOST }}
-        SF_ACCOUNT: ${{ secrets.SNF_ACCOUNT }}
-        SF_USERNAME: ${{ secrets.SNF_USERNAME }}
-        SF_PASSWORD: ${{ secrets.SNF_PASSWORD }}
+        SNF_ACCOUNT: ${{ secrets.SNF_ACCOUNT }}
+        SNF_USERNAME: ${{ secrets.SNF_USERNAME }}
+        SNF_PASSWORD: ${{ secrets.SNF_PASSWORD }}
 
     steps:
 
@@ -37,14 +37,6 @@ jobs:
             curl -O "https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.31-linux_x86_64.bash"
             SNOWSQL_DEST=~/bin SNOWSQL_LOGIN_SHELL=~/.profile bash snowsql-1.2.31-linux_x86_64.bash
             ~/bin/snowsql --version
-      - name: Configure SnowSQL Connection
-        run: |
-            mkdir -p ~/bin/.snowsql
-            echo "[connections]" > ~/bin/.snowsql/config
-            echo "ACCOUNT=$SF_ACCOUNT" >> ~/bin/.snowsql/config
-            echo "USERNAME=$SF_USERNAME" >> ~/bin/.snowsql/config
-            echo "PASSWORD=$SF_PASSWORD" >> ~/bin/.snowsql/config  # Password authentication
-            chmod 600 ~/bin/.snowsql/config  #Set permissions on the config file
 
       - name: Extract Data - API
         run:  python3 extractApi.py $API_URL $API_KEY $API_HOST
@@ -59,4 +51,4 @@ jobs:
           fi
 
       - name: Loading Data - Snowflake
-        run:  bash LoadData2Snowflake.sh
+        run:  bash LoadData2Snowflake.sh $SNF_ACCOUNT $SNF_USERNAME $SNF_PASSWORD || exit 1
