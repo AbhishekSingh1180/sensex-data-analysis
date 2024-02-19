@@ -36,7 +36,7 @@ jobs:
         run: |
             curl -O "https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.31-linux_x86_64.bash"
             SNOWSQL_DEST=~/bin SNOWSQL_LOGIN_SHELL=~/.profile bash snowsql-1.2.31-linux_x86_64.bash
-            snowsql --version || exit 1
+            ~/bin/snowsql --version || exit 1
 
       - name: Extract Data - API
         run:  python3 extractApi.py $API_URL $API_KEY $API_HOST || exit 1
