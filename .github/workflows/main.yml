@@ -14,9 +14,9 @@ jobs:
         API_URL: ${{ secrets.API_URL }}
         API_KEY: ${{ secrets.API_KEY }}
         API_HOST: ${{ secrets.API_HOST }}
-        SNF_ACCOUNT: ${{ secrets.SNF_ACCOUNT }}
-        SNF_USERNAME: ${{ secrets.SNF_USERNAME }}
-        SNF_PASSWORD: ${{ secrets.SNF_PASSWORD }}
+        SF_ACCOUNT: ${{ secrets.SNF_ACCOUNT }}
+        SF_USERNAME: ${{ secrets.SNF_USERNAME }}
+        SF_PASSWORD: ${{ secrets.SNF_PASSWORD }}
 
     steps:
 
@@ -39,12 +39,12 @@ jobs:
             ~/bin/snowsql --version
       - name: Configure SnowSQL Connection
         run: |
-            mkdir -p ~/.snowsql
-            echo "[connections]" > ~/.snowsql/config
-            echo "ACCOUNT = $SNF_ACCOUNT" >> ~/.snowsql/config
-            echo "USERNAME = $SNF_USERNAME" >> ~/.snowsql/config
-            echo "PASSWORD = $SNF_PASSWORD" >> ~/.snowsql/config  # Password authentication
-            chmod 600 ~/.snowsql/config  #Set permissions on the config file
+            mkdir -p ~/bin/.snowsql
+            echo "[connections]" > ~/bin/.snowsql/config
+            echo "ACCOUNT=$SF_ACCOUNT" >> ~/bin/.snowsql/config
+            echo "USERNAME=$SF_USERNAME" >> ~/bin/.snowsql/config
+            echo "PASSWORD=$SF_PASSWORD" >> ~/bin/.snowsql/config  # Password authentication
+            chmod 600 ~/bin/.snowsql/config  #Set permissions on the config file
 
       - name: Extract Data - API
         run:  python3 extractApi.py $API_URL $API_KEY $API_HOST
