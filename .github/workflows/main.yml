@@ -19,8 +19,6 @@ jobs:
         SNF_PASSWORD: ${{ secrets.SNF_PASSWORD }}
 
     steps:
-      - name: Start
-        run: echo "Starting"
 
       - name: Checkout code
         uses: actions/checkout@v2  # This step pulls your repository code
@@ -40,7 +38,7 @@ jobs:
             SNOWSQL_DEST=~/bin SNOWSQL_LOGIN_SHELL=~/.profile bash snowsql-1.2.31-linux_x86_64.bash
 
       - name: Extract Data - API
-        run: API_URL=${API_URL} API_KEY=${API_KEY} API_HOST=${API_HOST} python3 extractApi.py
+        run:  python3 extractApi.py $API_URL $API_KEY $API_HOST
 
       - name: Verify Extract File
         run: |
@@ -52,7 +50,4 @@ jobs:
           fi
 
       - name: Loading Data - Snowflake
-        run: SNF_ACCOUNT=${SNF_ACCOUNT} SNF_USERNAME=${SNF_USERNAME} SNF_PASSWORD=${SNF_PASSWORD} bash Load2Snowflake.sh 
-
-      - name: Complete
-        run: echo "Success"
+        run:  bash Load2Snowflake.sh $SNF_ACCOUNT $SNF_USERNAME $SNF_PASSWORD
