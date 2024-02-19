@@ -13,6 +13,10 @@ SNF_USERNAME="$2"
 SNF_PASSWORD="$3"
 SNF_WAREHOUSE="COMPUTE_WH"
 
+echo $SNF_ACCOUNT
+echo $SNF_USERNAME
+echo $SNF_PASSWORD
+
 FILE_PATH=$(find data -maxdepth 1 -type f)
 
 EXECUTE_SQL_SCRIPT="execute.sql" 
