@@ -50,4 +50,4 @@ jobs:
           fi
 
       - name: Loading Data - Snowflake
-        run:  bash Load2Snowflake.sh $SNF_ACCOUNT $SNF_USERNAME $SNF_PASSWORD
+        run:  bash LoadData2Snowflake.sh $SNF_ACCOUNT $SNF_USERNAME $SNF_PASSWORD
