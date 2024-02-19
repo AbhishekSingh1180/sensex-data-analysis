@@ -15,8 +15,8 @@ jobs:
         API_KEY: ${{ secrets.API_KEY }}
         API_HOST: ${{ secrets.API_HOST }}
         SNF_ACCOUNT: ${{ secrets.SNF_ACCOUNT }}
-        SNF_USERNAME: ${{secrets.SNF_USERNAME}}
-        SNF_PASSWORD: ${{secrets.SNF_PASSWORD}}
+        SNF_USERNAME: ${{ secrets.SNF_USERNAME }}
+        SNF_PASSWORD: ${{ secrets.SNF_PASSWORD }}
 
     steps:
       - name: Start
