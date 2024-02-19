@@ -41,8 +41,6 @@ WHEN NOT MATCHED THEN INSERT VALUES \
 
 #EXECUTE SCRIPT
 
-alias snowsql=/Applications/SnowSQL.app/Contents/MacOS/snowsql 
-
 snowsql -a $SNF_ACCOUNT -u $SNF_USERNAME --variable db_key=$SNF_PASSWORD -f $EXECUTE_SQL_SCRIPT 
 
 #CLEAN UP
