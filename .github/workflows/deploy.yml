@@ -1,0 +1,40 @@
+name: Deploy DDL SQL with SnowSQL
+
+on:
+  push:
+    paths:
+      - 'DDL/Deploy/deployDDL.sql'
+
+jobs:
+  deploy_ddl_sql:
+    runs-on: ubuntu-latest
+
+    strategy:
+        fail-fast: true 
+
+    env:
+      SNF_ACCOUNT: ${{ secrets.SNF_ACCOUNT }}
+      SNF_USERNAME: ${{ secrets.SNF_USERNAME }}
+      SNF_PASSWORD: ${{ secrets.SNF_PASSWORD }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # This step pulls your repository code
+
+      - name: Install SnowSQL
+        run: |
+          curl -O "https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.31-linux_x86_64.bash"
+          SNOWSQL_DEST=~/bin SNOWSQL_LOGIN_SHELL=~/.profile bash snowsql-1.2.31-linux_x86_64.bash
+          ~/bin/snowsql --version
+
+      - name: Update SnowSQL config
+        run: |
+          echo "[connections.awesome]
+          accountname = $SNF_ACCOUNT
+          username = $SNF_USERNAME
+          password = $SNF_PASSWORD" > ~/.snowsql/config
+          cat ~/.snowsql/config
+
+      - name: Deploy DDL SQL with SnowSQL
+        run: |
+          ~/bin/snowsql --config ~/.snowsql/config --connection awesome -w "COMPUTE_WH" -f DDL/Deploy/deployDDL.sql
