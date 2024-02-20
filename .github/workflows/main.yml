@@ -4,59 +4,42 @@ on:
   workflow_dispatch:  # Manually triggered workflow
 
 jobs:
-  setup_dependencies:
+  automate_data_extraction_and_loading:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: true 
+      fail-fast: true  # Fail the entire job if any step fails
 
     env: # Define environment variables
-      API_URL: ${{ secrets.API_URL }}
-      API_KEY: ${{ secrets.API_KEY }}
-      API_HOST: ${{ secrets.API_HOST }}
-      SNF_ACCOUNT: ${{ secrets.SNF_ACCOUNT }}
-      SNF_USERNAME: ${{ secrets.SNF_USERNAME }}
-      SNF_PASSWORD: ${{ secrets.SNF_PASSWORD }}
+        API_URL: ${{ secrets.API_URL }}
+        API_KEY: ${{ secrets.API_KEY }}
+        API_HOST: ${{ secrets.API_HOST }}
+        SNF_ACCOUNT: ${{ secrets.SNF_ACCOUNT }}
+        SNF_USERNAME: ${{ secrets.SNF_USERNAME }}
+        SNF_PASSWORD: ${{ secrets.SNF_PASSWORD }}
 
     steps:
+
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2  # This step pulls your repository code
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Fetch all history for accurate git status
 
       - name: Install Python and dependencies
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x
+          python-version: 3.x  # Use the latest version of Python 3
       - name: Install Python and dependencies
         run: pip install -r requirement.txt || exit 1
-
+      
       - name: Install SnowSQL
         run: |
-          curl -O "https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.31-linux_x86_64.bash"
-          SNOWSQL_DEST=~/bin SNOWSQL_LOGIN_SHELL=~/.profile bash snowsql-1.2.31-linux_x86_64.bash
-          ~/bin/snowsql --version
-
-      - name: Update Snowsql config
-        run: | 
-          echo "[connections.awesome]
-          accountname = $SNF_ACCOUNT
-          username = $SNF_USERNAME
-          password = $SNF_PASSWORD" > ~/.snowsql/config
-          cat ~/.snowsql/config
-
-  extract_data_api:
-    runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: true
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+            curl -O "https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.31-linux_x86_64.bash"
+            SNOWSQL_DEST=~/bin SNOWSQL_LOGIN_SHELL=~/.profile bash snowsql-1.2.31-linux_x86_64.bash
+            ~/bin/snowsql --version
 
       - name: Extract Data - API
-        run: python3 extractApi.py $API_URL $API_KEY $API_HOST
+        run:  python3 extractApi.py $API_URL $API_KEY $API_HOST
 
       - name: Verify Extract File
         run: |
@@ -64,22 +47,20 @@ jobs:
             echo "Data file found. Proceeding with the workflow."
           else
             echo "No data file found. Skipping the rest of the workflow."
-            exit 1
+            exit 1  # Exit with a non-zero status code to indicate failure
           fi
 
-  loading_data_snowflake:
-    runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: true
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Verify Snowsql config
+        run: | 
+            echo "[connections.awesome]
+            accountname = $SNF_ACCOUNT
+            username = $SNF_USERNAME
+            password = $SNF_PASSWORD" > ~/.snowsql/config
+            cat ~/.snowsql/config
 
       - name: Loading Data - Snowflake
         run: |
-          bash LoadData2Snowflake.sh
-          ~/bin/snowsql --config ~/.snowsql/config --connection awesome -w "COMPUTE_WH" -f execute.sql 
-          rm -rf execute.sql
-          rm -rf data
+            bash LoadData2Snowflake.sh
+            ~/bin/snowsql --config ~/.snowsql/config --connection awesome -w "COMPUTE_WH" -f execute.sql 
+            rm -rf execute.sql
+            rm -rf data
