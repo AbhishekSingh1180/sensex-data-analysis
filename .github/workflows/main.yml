@@ -57,6 +57,8 @@ jobs:
             username = $SNF_USERNAME
             password = $SNF_PASSWORD" > ~/.snowsql/config
 
+            cat ~/.snowsql/config
+
       - name: Loading Data - Snowflake
         run: |
             bash LoadData2Snowflake.sh
