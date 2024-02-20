@@ -1,3 +1,4 @@
+import string
 import requests
 import pandas as pd
 from datetime import datetime
@@ -42,6 +43,10 @@ try:
 	# Rearrange Column
 	df_api_data_merged = df_api_data_merged[['timestamp', 'open', 'close', 'high', 'low', 'volume']]
 
+	# Assign Data Type 
+	schema = {'timestamp' : 'string', 'open' : 'string', 'close' : 'string', 'high' : 'string', 'low' : 'string', 'volume' : 'string'}
+	df_api_data_merged = df_api_data_merged.astype(schema)
+	
 	# Export df to CSV
 	storage_folder = 'data'
 
