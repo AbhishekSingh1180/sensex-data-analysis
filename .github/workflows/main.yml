@@ -53,7 +53,7 @@ jobs:
       - name: Loading Data - Snowflake
         run: |
             bash LoadData2Snowflake.sh
-            ~/bin/snowsql -a $SNF_ACCOUNT -u $SNF_USERNAME --variable db_key=$SNF_PASSWORD -f execute.sql
+            ~/bin/snowsql -a $SNF_ACCOUNT -u $SNF_USERNAME --variable db_key=$SNF_PASSWORD --w "COMPUTE_WH" -f execute.sql 
             rm -rf execute.sql
             rm -rf data
               
