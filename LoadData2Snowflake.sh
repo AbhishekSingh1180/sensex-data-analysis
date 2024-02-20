@@ -41,10 +41,9 @@ WHEN NOT MATCHED THEN INSERT VALUES \
 
 #EXECUTE SCRIPT
 
-echo "$SNF_ACCOUNT testing"
-
-~/bin/snowsql -a $SNF_ACCOUNT -u $SNF_USERNAME --variable db_key=$SNF_PASSWORD -f $EXECUTE_SQL_SCRIPT
+# ~/bin/snowsql -a $SNF_ACCOUNT -u $SNF_USERNAME --variable db_key=$SNF_PASSWORD -f $EXECUTE_SQL_SCRIPT
+# ~/bin/snowsql -f $EXECUTE_SQL_SCRIPT
 
 #CLEAN UP
-rm -rf $EXECUTE_SQL_SCRIPT
-rm -rf data
+# rm -rf $EXECUTE_SQL_SCRIPT
+# rm -rf data

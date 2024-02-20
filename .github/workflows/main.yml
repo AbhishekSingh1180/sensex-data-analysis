@@ -51,4 +51,9 @@ jobs:
           fi
 
       - name: Loading Data - Snowflake
-        run:  bash LoadData2Snowflake.sh $SNF_ACCOUNT $SNF_USERNAME $SNF_PASSWORD || exit 1
+        run: |
+            bash LoadData2Snowflake.sh
+            ~/bin/snowsql -a $SNF_ACCOUNT -u $SNF_USERNAME --variable db_key=$SNF_PASSWORD -f execute.sql
+            rm -rf execute.sql
+            rm -rf data
+              
