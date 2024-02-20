@@ -51,7 +51,7 @@ jobs:
           fi
 
       - name: Verify Snowsql config
-        run: mkdir ~/.snowsql
+        run: | 
             echo "[connections.awesome]
             accountname = $SNOWFLAKE_ACCOUNT
             username = $SNF_USERNAME
