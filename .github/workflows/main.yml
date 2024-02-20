@@ -53,7 +53,7 @@ jobs:
       - name: Verify Snowsql config
         run: | 
             echo "[connections.awesome]
-            accountname = $SNOWFLAKE_ACCOUNT
+            accountname = $SNF_ACCOUNT
             username = $SNF_USERNAME
             password = $SNF_PASSWORD" > ~/.snowsql/config
             cat ~/.snowsql/config
