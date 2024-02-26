@@ -33,7 +33,6 @@ jobs:
           accountname = $SNF_ACCOUNT
           username = $SNF_USERNAME
           password = $SNF_PASSWORD" > ~/.snowsql/config
-          cat ~/.snowsql/config
 
       - name: Deploy DDL SQL with SnowSQL
         run: |
