@@ -8,4 +8,4 @@
 
 Leveraged GitHub Actions for streamlined data extraction from Yahoo finance API, Snowflake and SnowSQL for extraction, storage, and transformation for Sensex Data.
 
-Check out other GCP project using this project data as source for migration : [![snowflake to bigquery data migration](https://img.shields.io/badge/GitHub-View%20Repo-blue.svg)](https://github.com/AbhishekSingh1180/snowflake-bigquery-data-migration)
+Check out other GCP project using this project data as source for migration : [![snowflake to bigQuery data migration](https://img.shields.io/badge/GitHub-View%20Repo-blue.svg)](https://github.com/AbhishekSingh1180/snowflake-bigquery-data-migration)
